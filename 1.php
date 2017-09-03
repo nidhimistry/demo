@@ -1,5 +1,5 @@
 <?php
-include('Main.class.php');
+include('class/Main.class.php');
 $main=new Main();
 
 /*//INSERT RECORD
@@ -47,14 +47,37 @@ print_r($se);*/
 /*//CUSTOM QUERY
 $custom=$main->GetCustom("select * from testing_table");
 print_r($custom);*/
+if(isset($_POST['submit_btn'])){
+	//print_r($_FILES);exit;
+	/*Array ( 
+			[upload_file] => Array ( 
+				[name] => Lodestone Directions.jpg 
+				[type] => image/jpeg 
+				[tmp_name] => C:\wamp\tmp\php43B8.tmp 
+				[error] => 0 
+				[size] => 155749 ) 
+		)*/
 
+		//change file name
+		$extension = explode(".", $_FILES['upload_file']['name']);
+		$file_name = rand(10,100).date("YmdHis");
+		$extension[0]=$file_name;
+		$filename=implode(".", $extension);
+		if(move_uploaded_file($_FILES['upload_file']['tmp_name'], "upload/images/".$filename)){
+			echo "file uploaded successfully";
+		}else{
+			echo "Error in file upload";
+		}
+		
+	
+}
 ?>
 <html>
 	<head>
 		<title>Basic PHP Demo</title>
 	</head>
 	<body>
-		<form name="dataform" id="dataform" method="post">
+		<form name="dataform" id="dataform" method="post" enctype="multipart/form-data" action="">
 			<label>Select File : </label>
 			<input type="file" name="upload_file" id="upload_file">
 			<input type="submit" name="submit_btn" id="submit_btn" value="Submit"> 
